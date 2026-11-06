@@ -348,3 +348,10 @@ html[data-theme=dark] .rm-progress{filter:drop-shadow(0 0 4px #e5c37755)}
 .js .gallery-item.reveal img,.js .safety-photo.reveal img{transform:none}
 .js .spec-head,.js .spec tbody tr,.js .spec thead tr,.js .spec-note{opacity:1;transform:none}
 }
+.rm-vessel{animation:rm-bob 5s ease-in-out infinite alternate}
+.rm-vessel path{fill:var(--map-barge)}
+.rm-vessel .rm-coal{fill:#1c2b31}
+.rm-vessel .rm-crane{fill:none;stroke:var(--map-barge);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+html[data-theme=dark] .rm-vessel .rm-coal{fill:#e5c377}
+@keyframes rm-bob{from{transform:translateY(-1.5px)}to{transform:translateY(1.5px)}}
+@media(max-width:700px){.rm-stop[data-i="4"] .rm-name,.rm-stop[data-i="4"] .rm-sub{stroke:none}}
