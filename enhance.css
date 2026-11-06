@@ -383,3 +383,65 @@ html[lang=zh] .eyebrow{letter-spacing:1px}
 .rm-ripple{stroke-width:1;animation:rm-ripple 5.2s ease-out infinite}
 @keyframes rm-ripple{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(1.9)}}
 .rm-callout path{stroke-dasharray:1 3}
+
+/* ===== conveyor engineering drawing ===== */
+.conveyor{margin-top:64px;padding-top:56px;border-top:1px solid var(--line)}
+.conveyor-head{display:grid;grid-template-columns:1.1fr 1fr;gap:8%;align-items:end;margin-bottom:30px}
+.conveyor-head h3{font-size:clamp(24px,2.6vw,36px);font-weight:500;letter-spacing:-.7px;line-height:1.25}
+.conveyor-head .eyebrow{margin-bottom:12px}
+.conveyor-head p{font-size:15px}
+.conveyor-scroll{border-radius:14px;overflow:hidden;box-shadow:var(--shadow);background:#0c2531}
+.conveyor-canvas svg{display:block;width:100%;height:auto}
+.conveyor-legend{list-style:none;counter-reset:l;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px 24px}
+.conveyor-legend li{counter-increment:l;position:relative;padding-left:34px;font-size:13px;line-height:1.35;min-height:24px}
+.conveyor-legend li:before{content:counter(l);position:absolute;left:0;top:-2px;width:24px;height:24px;border:1px solid var(--accent);border-radius:50%;display:grid;place-items:center;font:600 11px ui-monospace,Menlo,monospace;color:var(--accent)}
+.conveyor-legend strong{display:block;font-weight:600}
+.conveyor-legend small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.conveyor-note{margin-top:16px;font-size:12px}
+.cv-paper{fill:#0c2531}
+.cv-grid1{fill:none;stroke:#fff;stroke-opacity:.035;stroke-width:1}
+.cv-grid2{fill:none;stroke:#fff;stroke-opacity:.07;stroke-width:1}
+.cv-hatch{stroke:#cfe3e8;stroke-opacity:.16;stroke-width:1}
+.cv-chatch{stroke:#e9c87a;stroke-width:1.4}
+.dl{fill:none;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.5s cubic-bezier(.5,0,.2,1) var(--t,0s)}
+.drawn .dl{stroke-dashoffset:0}
+.fd{opacity:0;transition:opacity .7s ease var(--t,0s)}
+.drawn .fd{opacity:1}
+.cv-line{stroke:#d7e7ea;stroke-width:1.4;stroke-linejoin:round}
+.dl.cv-solid{fill:#0c2531}
+.cv-thin{stroke:#9ab6bf;stroke-width:.8}
+.cv-gold{stroke:#e9c87a;stroke-width:1.6;stroke-linejoin:round}
+.cv-goldthin{stroke:#e9c87a;stroke-width:.8;stroke-opacity:.8}
+.cv-dash{fill:none;stroke:#6f93a0;stroke-width:.8;stroke-dasharray:4 5}
+.cv-center{fill:none;stroke:#8fb0ba;stroke-width:.8;stroke-dasharray:14 4 2 4}
+.cv-rule{fill:none;stroke:#d7e7ea;stroke-opacity:.3;stroke-width:1}
+.cv-water{fill:none;stroke:#62b3c9;stroke-width:1.2}
+.cv-wave{fill:none;stroke:#62b3c9;stroke-opacity:.6;stroke-width:1;animation:rm-drift 6s ease-in-out infinite alternate}
+.cv-soil{fill:url(#cv-h);stroke:none}
+.cv-dim{font:500 11px ui-monospace,Menlo,monospace;fill:#9ab6bf}
+.cv-dim-line{fill:none;stroke:#9ab6bf;stroke-width:.8}
+.cv-arrow{fill:#9ab6bf}
+.cv-view{font:600 12px ui-monospace,Menlo,monospace;letter-spacing:1.5px;fill:#e9c87a}
+.cv-lead{fill:none;stroke:#e9c87a;stroke-width:.8}
+.cv-balloon{fill:#0c2531;stroke:#e9c87a;stroke-width:1.2}
+.cv-num{font:600 12px ui-monospace,Menlo,monospace;fill:#e9c87a}
+.cv-fill{fill:url(#cv-c);stroke:#e9c87a;stroke-width:.8}
+.cv-coal{fill:none;stroke:#e9c87a;stroke-width:3;stroke-dasharray:5 15;animation:cv-move .8s linear infinite}
+@keyframes cv-move{to{stroke-dashoffset:-20}}
+.cv-carriage{fill:#0c2531;stroke:#e9c87a;stroke-width:1.4}
+.cv-boom{fill:none;stroke:#e9c87a;stroke-width:2.4}
+.cv-pour{fill:none;stroke:#e9c87a;stroke-width:2.4;stroke-dasharray:2 5;animation:cv-pour .45s linear infinite}
+@keyframes cv-pour{to{stroke-dashoffset:-7}}
+.cv-block{fill:#0c2531;stroke:#d7e7ea;stroke-width:1}
+.cv-rulebox{fill:none;stroke:#d7e7ea;stroke-width:.8}
+.cv-tb{font:600 11px ui-monospace,Menlo,monospace;letter-spacing:.6px;fill:#d7e7ea}
+.cv-tb2{font:500 10px ui-monospace,Menlo,monospace;fill:#9ab6bf}
+@media(max-width:1050px){.conveyor-legend{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){
+.conveyor{margin-top:40px;padding-top:36px}
+.conveyor-head{grid-template-columns:1fr;gap:14px;margin-bottom:20px}
+.conveyor-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.conveyor-canvas{width:860px}
+.conveyor-legend{gap:12px 16px}
+}
+@media(prefers-reduced-motion:reduce){.dl{stroke-dashoffset:0}.fd{opacity:1}}

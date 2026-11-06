@@ -3,7 +3,7 @@ const q=s=>document.querySelector(s),qa=s=>[...document.querySelectorAll(s)];
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 
 /* ---------- scroll reveal ---------- */
-const revealSel=['.about-heading','.about-copy','.section-head','.route-tabs','.route-panels','.terminal','.product-layout>*','.commitment-layout>*','.story','.credentials>*','.contact-layout>*','.order-head>*','.order-row>*','.gallery-item','.band-inner','.metrics>div','.footer-top>*'];
+const revealSel=['.about-heading','.about-copy','.section-head','.route-tabs','.route-panels','.terminal','.conveyor-head>*','.conveyor-scroll','.product-layout>*','.commitment-layout>*','.story','.credentials>*','.contact-layout>*','.order-head>*','.order-row>*','.gallery-item','.band-inner','.metrics>div','.footer-top>*'];
 const targets=[...new Set(qa(revealSel.join(',')))];
 targets.forEach(el=>{
   el.classList.add('reveal');
