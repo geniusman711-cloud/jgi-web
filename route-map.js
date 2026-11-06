@@ -12,7 +12,7 @@ const STOPS=[
   {name:'t29',sub:'±5 km'},
   {name:'t30',sub:i18n('t134')+' MT'},
   {name:'t31',sub:'300 ft'},
-  {name:'t32',sub:i18n('x39')}
+  {name:'x40',sub:i18n('x39')}
 ];
 
 /* the panel maps a real lon/lat box to the SVG */
