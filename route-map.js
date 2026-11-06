@@ -1,0 +1,106 @@
+/* Operating-area map for the Operations section, drawn from real geography (route-map-data.js). */
+(()=>{
+const host=document.querySelector('.route-map-canvas'),M=window.JGI_MAP;
+if(!host||!M)return;
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const small=matchMedia('(max-width:700px)');
+const copy=k=>window.JGI_COPY[k][language];
+const i18n=k=>'<tspan data-i18n="'+k+'">'+copy(k)+'</tspan>';
+
+const STOPS=[
+  {name:'t28',sub:i18n('t132')+' Ha'},
+  {name:'t29',sub:'±5 km'},
+  {name:'t30',sub:i18n('t134')+' MT'},
+  {name:'t31',sub:'300 ft'},
+  {name:'t32',sub:i18n('x39')}
+];
+
+/* the panel maps a real lon/lat box to the SVG */
+const LAYOUTS={
+  wide:{w:1200,h:560,lon:118.9125,lat:1.058,ppd:19310,km:1,north:[1158,46],
+    labels:[[0,38,'middle'],[-22,-4,'end'],[-14,-34,'end'],[22,-4,'start'],[0,-44,'middle']]},
+  tall:{w:360,h:400,lon:118.9368,lat:1.058,ppd:13793,km:1,north:[30,76],
+    labels:[[22,-2,'start'],[20,28,'start'],[-14,-34,'end'],[-4,40,'start'],[-20,-22,'end']]}
+};
+
+const WAVES=[[118.9625,1.0565],[118.9545,1.0565],[118.9690,1.0478],[118.9610,1.0465],[118.9710,1.0545],[118.9720,1.0400],[118.9592,1.0540]];
+const proj=(p,[lon,lat])=>[(lon-p.lon)*p.ppd,(p.lat-lat)*p.ppd];
+const line=(p,c,close)=>c.map((q,i)=>{const [x,y]=proj(p,q);return (i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)}).join('')+(close?'Z':'');
+
+let svg,route,marker,total=0,lens=[],pos=0,raf=0;
+
+function selected(){
+  const i=routeTabs.findIndex(t=>t.getAttribute('aria-selected')==='true');
+  return i<0?0:i;
+}
+function mover(shape,d,dur,delay,turn){
+  return '<g class="rm-barge" opacity="0">'+shape+
+    '<animateMotion dur="'+dur+'s" begin="'+delay+'s" repeatCount="indefinite" path="'+d+'"'+(turn?' rotate="auto"':'')+'/>'+
+    '<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.05;.95;1" dur="'+dur+'s" begin="'+delay+'s" repeatCount="indefinite"/></g>';
+}
+const TRUCK='<g class="rm-truck" transform="scale(1.45)"><path d="M-9-4H3V4H-9Z"/><path class="rm-load" d="M-8-3H2V3H-8Z"/><path d="M4-3.5H8Q9-3.5 9-2.5V2.5Q9 3.5 8 3.5H4Z"/></g>';
+const BARGE='<path class="rm-wake" d="M-15 3L-46-2M-15 5L-46 10"/><path d="M-14-3H14L11 5H-11Z"/><path class="rm-coal" d="M-11-3L-5-9H5L11-3Z"/>';
+
+function draw(){
+  const L=small.matches?LAYOUTS.tall:LAYOUTS.wide;
+  const nearest=(c,t)=>c.reduce((b,q,i)=>{const d=(q[0]-t[0])**2+(q[1]-t[1])**2;return d<b[0]?[d,i]:b},[Infinity,0])[1];
+  const haul=M.road.slice(0,nearest(M.road,M.stops[2])+1);
+  const seaStop=M.sea[M.seaStop];
+  const pts=[...M.stops.map(c=>proj(L,c)),proj(L,seaStop)];
+  const stops=STOPS.map((s,i)=>{
+    const [x,y]=pts[i],[lx,ly,an]=L.labels[i];
+    return '<g class="rm-stop" data-i="'+i+'" transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+')">'+
+      '<circle class="rm-hit" r="30"/><circle class="rm-pulse" r="14"/><circle class="rm-ring" r="14"/><circle class="rm-dot" r="5.5"/>'+
+      '<text class="rm-name" x="'+lx+'" y="'+ly+'" text-anchor="'+an+'">'+i18n(s.name)+'</text>'+
+      '<text class="rm-sub" x="'+lx+'" y="'+(ly+18)+'" text-anchor="'+an+'">'+s.sub+'</text></g>';
+  }).join('');
+  const kmW=L.km/111*L.ppd,sx=18,sy=L.h-22;
+  host.innerHTML='<svg viewBox="0 0 '+L.w+' '+L.h+'" role="img" aria-labelledby="route-map-note">'+
+    '<rect class="rm-sea" width="'+L.w+'" height="'+L.h+'"/>'+
+    WAVES.map((c,i)=>{const [x,y]=proj(L,c);return '<path class="rm-wave" style="animation-delay:'+(-i*1.3)+'s" d="M'+x.toFixed(1)+' '+y.toFixed(1)+'q11-6 22 0t22 0"/>'}).join('')+
+    [0,1,2].map(i=>'<circle class="rm-ripple" style="animation-delay:'+(i*1.5)+'s" cx="'+pts[3][0].toFixed(1)+'" cy="'+pts[3][1].toFixed(1)+'" r="16"/>').join('')+
+    '<path class="rm-land" d="'+line(L,M.local,true)+'"/>'+
+    '<path class="rm-road" d="'+line(L,M.road)+'"/>'+
+    '<path class="rm-route" d="'+line(L,M.sea)+'"/>'+
+    '<path class="rm-progress" d="'+line(L,[...M.road,...M.sea.slice(1,M.seaStop+1)])+'"/>'+
+    mover(TRUCK,line(L,haul),15,0,true)+mover(TRUCK,line(L,haul),15,-5,true)+mover(TRUCK,line(L,haul),15,-10,true)+
+    mover(BARGE,line(L,M.sea),24,0,false)+mover(BARGE,line(L,M.sea),24,-12,false)+
+    '<text class="rm-title" x="18" y="30">'+i18n('x37')+'</text>'+
+    '<g class="rm-scale"><path d="M'+sx+' '+(sy-5)+'V'+sy+'H'+(sx+kmW)+'V'+(sy-5)+'"/><text x="'+(sx+kmW+8)+'" y="'+(sy+1)+'">'+L.km+' km</text></g>'+
+    '<g class="rm-north" transform="translate('+L.north[0]+' '+L.north[1]+')"><path d="M0-15L6 7L0 3L-6 7Z"/><text y="-20" text-anchor="middle">N</text></g>'+
+    stops+
+    '<g class="rm-marker"><circle class="rm-marker-halo" r="12"/><circle class="rm-marker-dot" r="5.5"/></g></svg>';
+  svg=host.querySelector('svg');route=svg.querySelector('.rm-progress');marker=svg.querySelector('.rm-marker');
+  total=route.getTotalLength();
+  lens=pts.map(([x,y])=>{
+    let best=0,dist=Infinity;
+    for(let l=0;l<=total;l+=1){const p=route.getPointAtLength(l),d=(p.x-x)**2+(p.y-y)**2;if(d<dist){dist=d;best=l}}
+    return best;
+  });
+  route.style.strokeDasharray=total+' '+total;
+  svg.querySelectorAll('.rm-stop').forEach(g=>g.addEventListener('click',()=>selectRoute(+g.dataset.i)));
+  if(reduce)svg.pauseAnimations();
+  setStep(selected(),false);
+}
+function place(l){
+  pos=l;
+  const p=route.getPointAtLength(l);
+  marker.setAttribute('transform','translate('+p.x+' '+p.y+')');
+  route.style.strokeDashoffset=total-l;
+}
+function setStep(i,animate){
+  svg.querySelectorAll('.rm-stop').forEach((g,n)=>{g.classList.toggle('on',n===i);g.classList.toggle('done',n<i)});
+  cancelAnimationFrame(raf);
+  const from=pos,to=lens[i];
+  if(!animate||reduce){place(to);return}
+  const t0=performance.now(),dur=Math.min(1800,600+Math.abs(to-from)*1.2);
+  (function tick(now){
+    const p=Math.min(1,Math.max(0,(now-t0)/dur)),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+    place(from+(to-from)*e);
+    if(p<1)raf=requestAnimationFrame(tick);
+  })(t0);
+}
+document.addEventListener('route:change',e=>setStep(e.detail,true));
+small.addEventListener('change',()=>{pos=0;draw()});
+draw();
+})();
