@@ -364,3 +364,22 @@ html[data-theme=dark] .rm-vessel .rm-coal{fill:#e5c377}
 html[lang=zh] body{font-family:'DM Sans','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans SC',sans-serif}
 html[lang=zh] h1,html[lang=zh] h2,html[lang=zh] h3,html[lang=zh] .rm-name,html[lang=zh] .rm-title{font-family:Manrope,'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans SC',sans-serif;letter-spacing:0}
 html[lang=zh] .eyebrow{letter-spacing:1px}
+
+/* ===== map refinement ===== */
+.rm-road{stroke-width:5}
+.rm-progress{stroke-width:2.5}
+.rm-ring{stroke-width:1.5}
+.rm-stop:hover .rm-ring{r:10.5px}
+.rm-stop.on .rm-ring{r:9.5px}
+.rm-marker-halo{opacity:.25}
+.rm-route{stroke-dasharray:2 7;animation:rm-march 1.2s linear infinite}
+@keyframes rm-march{to{stroke-dashoffset:-9}}
+.rm-flow{fill:none;stroke:#fff;stroke-width:1.4;stroke-linecap:round;stroke-dasharray:1 17;opacity:.7;pointer-events:none;animation:rm-flow 1.6s linear infinite}
+@keyframes rm-flow{to{stroke-dashoffset:-18}}
+.rm-pulse{stroke-width:1}
+.rm-stop.on .rm-pulse{animation:rm-pulse 2.6s cubic-bezier(.2,.6,.3,1) infinite}
+.rm-stop[data-i="3"]:not(.on) .rm-pulse{animation:none}
+@keyframes rm-pulse{0%{opacity:.7;transform:scale(1)}85%,100%{opacity:0;transform:scale(2.6)}}
+.rm-ripple{stroke-width:1;animation:rm-ripple 5.2s ease-out infinite}
+@keyframes rm-ripple{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(1.9)}}
+.rm-callout path{stroke-dasharray:1 3}
