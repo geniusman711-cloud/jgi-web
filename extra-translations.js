@@ -28,6 +28,7 @@ x34:{id:"Garis pantai dari OpenStreetMap, jalan angkut dari citra satelit Esri. 
 x37:{id:"Area operasi",en:"Operating area"},
 x39:{id:"Untuk loading MV",en:"For MV loading"},
 x40:{id:"Anchorage JGI",en:"JGI Anchorage"},
+x41:{id:"300 meter",en:"300 meters"},
 x50:{id:"PESAN BATUBARA",en:"ORDER COAL"},
 x51:{id:"Form pemesanan batubara.",en:"Coal order form."},
 x52:{id:"Unduh form, lengkapi, lalu kirim ke pt.jayakhisma@gmail.com.",en:"Download the form, complete it, then send it to pt.jayakhisma@gmail.com."},

@@ -17,10 +17,10 @@ const STOPS=[
 
 /* the panel maps a real lon/lat box to the SVG */
 const LAYOUTS={
-  wide:{w:1200,h:560,lon:118.9125,lat:1.058,ppd:19310,km:1,north:[1158,46],vessel:[62,4,1],
-    labels:[[0,38,'middle'],[-22,-4,'end'],[-14,-34,'end'],[22,-4,'start'],[0,-44,'middle']]},
-  tall:{w:360,h:400,lon:118.9368,lat:1.058,ppd:13793,km:1,north:[30,76],vessel:[-2,36,.72],
-    labels:[[22,-2,'start'],[20,28,'start'],[-14,-34,'end'],[-4,40,'start'],[-20,-32,'end']]}
+  wide:{w:1200,h:560,lon:118.9125,lat:1.058,ppd:19310,km:1,north:[1158,46],vessel:[66,2,1],callout:[70,16,'start',62,10],
+    labels:[[0,38,'middle'],[-22,-4,'end'],[-14,-34,'end'],[6,40,'start'],[0,-44,'middle']]},
+  tall:{w:360,h:400,lon:118.9368,lat:1.058,ppd:13793,km:1,north:[30,76],vessel:[38,-14,.72],callout:[87,26,'end',44,12],
+    labels:[[22,-2,'start'],[20,28,'start'],[-30,-24,'end'],[-42,44,'start'],[-20,-32,'end']]}
 };
 
 const WAVES=[[118.9625,1.0565],[118.9545,1.0565],[118.9690,1.0478],[118.9610,1.0465],[118.9710,1.0545],[118.9720,1.0400],[118.9592,1.0540]];
@@ -42,6 +42,12 @@ const TRUCK='<g class="rm-truck" transform="scale(1.45)"><path d="M-9-4H3V4H-9Z"
 const VESSEL='<path d="M-40-5H34L44-7L36 9H-34Z"/><path d="M-36-16H-20V-5H-36Z"/><path d="M-32-22H-24V-16H-32Z"/><path class="rm-coal" d="M-14-9H30V-5H-14Z"/><path class="rm-crane" d="M-6-5V-20L12-11M18-5V-20L34-11"/>';
 const BARGE='<path class="rm-wake" d="M-15 3L-46-2M-15 5L-46 10"/><path d="M-14-3H14L11 5H-11Z"/><path class="rm-coal" d="M-11-3L-5-9H5L11-3Z"/>';
 
+function callout(L,pts){
+  const [jx,jy]=pts[3],[ax,ay]=pts[4],[cx,cy,an,ex,ey]=L.callout;
+  return '<g class="rm-callout"><path d="M'+((jx+ax)/2).toFixed(1)+' '+((jy+ay)/2).toFixed(1)+'L'+(jx+ex).toFixed(1)+' '+(jy+ey).toFixed(1)+'"/>'+
+    '<text class="rm-name" x="'+(jx+cx).toFixed(1)+'" y="'+(jy+cy).toFixed(1)+'" text-anchor="'+an+'">Transhipment</text>'+
+    '<text class="rm-sub" x="'+(jx+cx).toFixed(1)+'" y="'+(jy+cy+18).toFixed(1)+'" text-anchor="'+an+'">'+i18n('x41')+'</text></g>';
+}
 function draw(){
   const L=small.matches?LAYOUTS.tall:LAYOUTS.wide;
   const nearest=(c,t)=>c.reduce((b,q,i)=>{const d=(q[0]-t[0])**2+(q[1]-t[1])**2;return d<b[0]?[d,i]:b},[Infinity,0])[1];
@@ -51,7 +57,7 @@ function draw(){
   const stops=STOPS.map((s,i)=>{
     const [x,y]=pts[i],[lx,ly,an]=L.labels[i];
     return '<g class="rm-stop" data-i="'+i+'" transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+')">'+
-      '<circle class="rm-hit" r="30"/><circle class="rm-pulse" r="14"/><circle class="rm-ring" r="14"/><circle class="rm-dot" r="5.5"/>'+
+      '<circle class="rm-hit" r="22"/><circle class="rm-pulse" r="14"/><circle class="rm-ring" r="14"/><circle class="rm-dot" r="5.5"/>'+
       '<text class="rm-name" x="'+lx+'" y="'+ly+'" text-anchor="'+an+'">'+i18n(s.name)+'</text>'+
       '<text class="rm-sub" x="'+lx+'" y="'+(ly+18)+'" text-anchor="'+an+'">'+s.sub+'</text></g>';
   }).join('');
@@ -65,12 +71,12 @@ function draw(){
     '<path class="rm-route" d="'+line(L,toAnchor)+'"/>'+
     '<path class="rm-progress" d="'+line(L,[...M.road,...toAnchor.slice(1)])+'"/>'+
     mover(TRUCK,line(L,haul),15,0,true)+mover(TRUCK,line(L,haul),15,-5,true)+mover(TRUCK,line(L,haul),15,-10,true)+
-    mover(BARGE,line(L,toAnchor),12,0,false)+mover(BARGE,line(L,toAnchor),12,-6,false)+
+    mover('<g transform="scale(.72)">'+BARGE+'</g>',line(L,toAnchor),10,0,false)+
     '<g transform="translate('+(pts[4][0]+L.vessel[0]).toFixed(1)+' '+(pts[4][1]+L.vessel[1]).toFixed(1)+') scale('+L.vessel[2]+')"><g class="rm-vessel">'+VESSEL+'</g></g>'+
     '<text class="rm-title" x="18" y="30">'+i18n('x37')+'</text>'+
     '<g class="rm-scale"><path d="M'+sx+' '+(sy-5)+'V'+sy+'H'+(sx+kmW)+'V'+(sy-5)+'"/><text x="'+(sx+kmW+8)+'" y="'+(sy+1)+'">'+L.km+' km</text></g>'+
     '<g class="rm-north" transform="translate('+L.north[0]+' '+L.north[1]+')"><path d="M0-15L6 7L0 3L-6 7Z"/><text y="-20" text-anchor="middle">N</text></g>'+
-    stops+
+    callout(L,pts)+stops+
     '<g class="rm-marker"><circle class="rm-marker-halo" r="12"/><circle class="rm-marker-dot" r="5.5"/></g></svg>';
   svg=host.querySelector('svg');route=svg.querySelector('.rm-progress');marker=svg.querySelector('.rm-marker');
   total=route.getTotalLength();
