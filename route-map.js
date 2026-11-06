@@ -10,7 +10,7 @@ const i18n=k=>'<tspan data-i18n="'+k+'">'+copy(k)+'</tspan>';
 const STOPS=[
   {name:'t28',sub:i18n('t132')+' Ha'},
   {name:'t29',sub:'±5 km'},
-  {name:'t30',sub:i18n('t134')+' MT'},
+  {name:'t30',sub:'10 Ha'},
   {name:'t31',sub:'300 ft'},
   {name:'x40',sub:i18n('x39')}
 ];
