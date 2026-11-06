@@ -4,7 +4,7 @@ const host=document.querySelector('.route-map-canvas'),M=window.JGI_MAP;
 if(!host||!M)return;
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const small=matchMedia('(max-width:700px)');
-const copy=k=>window.JGI_COPY[k][language];
+const copy=k=>window.JGI_COPY[k][language]||window.JGI_COPY[k].en;
 const i18n=k=>'<tspan data-i18n="'+k+'">'+copy(k)+'</tspan>';
 
 const STOPS=[
@@ -45,7 +45,7 @@ const BARGE='<path class="rm-wake" d="M-15 3L-46-2M-15 5L-46 10"/><path d="M-14-
 function callout(L,pts){
   const [jx,jy]=pts[3],[ax,ay]=pts[4],[cx,cy,an,ex,ey]=L.callout;
   return '<g class="rm-callout"><path d="M'+((jx+ax)/2).toFixed(1)+' '+((jy+ay)/2).toFixed(1)+'L'+(jx+ex).toFixed(1)+' '+(jy+ey).toFixed(1)+'"/>'+
-    '<text class="rm-name" x="'+(jx+cx).toFixed(1)+'" y="'+(jy+cy).toFixed(1)+'" text-anchor="'+an+'">Transhipment</text>'+
+    '<text class="rm-name" x="'+(jx+cx).toFixed(1)+'" y="'+(jy+cy).toFixed(1)+'" text-anchor="'+an+'">'+i18n('x42')+'</text>'+
     '<text class="rm-sub" x="'+(jx+cx).toFixed(1)+'" y="'+(jy+cy+18).toFixed(1)+'" text-anchor="'+an+'">'+i18n('x41')+'</text></g>';
 }
 function draw(){

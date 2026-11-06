@@ -12,7 +12,7 @@ document.querySelector('#order-qr-save').addEventListener('click',()=>{
   const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download='QR-Form-Pemesanan-JGI.png';a.click();
 });
 document.querySelectorAll('.order-sheet').forEach((b,i)=>b.addEventListener('click',()=>{
-  const en=document.documentElement.lang==='en';
-  openImage(b.dataset.full,(en?'Coal order form · page ':'Form pemesanan batubara · halaman ')+(i+1),b);
+  const l=document.documentElement.lang;
+  openImage(b.dataset.full,({en:'Coal order form · page ',zh:'煤炭订购表 · 第 '}[l]||'Form pemesanan batubara · halaman ')+(i+1)+(l==='zh'?' 页':''),b);
 }));
 })();

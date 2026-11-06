@@ -359,3 +359,8 @@ html[data-theme=dark] .rm-vessel .rm-coal{fill:#e5c377}
 .rm-callout text{stroke:var(--map-sea)}
 .rm-callout .rm-name{fill:var(--accent)}
 .rm-stop[data-i="3"] .rm-name,.rm-stop[data-i="3"] .rm-sub{stroke:none}
+
+/* ===== Chinese ===== */
+html[lang=zh] body{font-family:'DM Sans','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans SC',sans-serif}
+html[lang=zh] h1,html[lang=zh] h2,html[lang=zh] h3,html[lang=zh] .rm-name,html[lang=zh] .rm-title{font-family:Manrope,'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans SC',sans-serif;letter-spacing:0}
+html[lang=zh] .eyebrow{letter-spacing:1px}

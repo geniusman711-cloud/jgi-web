@@ -117,11 +117,11 @@ const more=q('.gallery-more');
 if(more)more.addEventListener('click',()=>{qa('.gallery-item[hidden]').forEach(i=>{i.hidden=false});more.remove()});
 const dlg=q('#lightbox'),items=qa('.gallery-item'),prev=q('.lb-prev'),next=q('.lb-next');
 let gi=-1;
-function labels(){const en=document.documentElement.lang==='en';prev.setAttribute('aria-label',en?'Previous photo':'Foto sebelumnya');next.setAttribute('aria-label',en?'Next photo':'Foto berikutnya')}
+function labels(){const l=document.documentElement.lang;prev.setAttribute('aria-label',{en:'Previous photo',zh:'上一张'}[l]||'Foto sebelumnya');next.setAttribute('aria-label',{en:'Next photo',zh:'下一张'}[l]||'Foto berikutnya')}
 function showGallery(i){
   gi=(i+items.length)%items.length;const it=items[gi];
   const cap=it.querySelector('.gallery-cap').textContent;
-  const img=dlg.querySelector('img');img.src=it.dataset.full;img.alt=cap;q('#image-caption').textContent=cap+' · '+(document.documentElement.lang==='en'?'JGI photograph':'dokumentasi JGI');
+  const img=dlg.querySelector('img');img.src=it.dataset.full;img.alt=cap;q('#image-caption').textContent=cap+' · '+({en:'JGI photograph',zh:'JGI 实景照片'}[document.documentElement.lang]||'dokumentasi JGI');
 }
 items.forEach((it,i)=>it.addEventListener('click',()=>{
   openImage(it.dataset.full,it.querySelector('.gallery-cap').textContent,it);
