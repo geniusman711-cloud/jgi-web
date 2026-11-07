@@ -24,7 +24,7 @@ const plan=
   d('M152 0C170 40 148 90 158 150C166 200 152 240 162 285','cv-thin',.1)+
   /* depth contours */
   [405,535,665,795,925,1055].map(x=>'<path class="fd cv-dash" style="--t:.5s" d="M'+x+' 0Q'+(x+26)+' 142 '+x+' 285"/>').join('')+
-  DEPTHS.map(([x,t])=>'<text class="fd cv-dim" style="--t:.7s" x="'+x+'" y="22" text-anchor="middle">'+t+' m</text>').join('')+
+  
   /* stockpile and crusher */
   shape('ellipse','cx="52" cy="120" rx="36" ry="24"','cv-line',.2)+
   shape('ellipse','cx="52" cy="120" rx="24" ry="15"','cv-thin',.3)+
@@ -82,19 +82,29 @@ const section=
   '<path class="fd cv-coal" style="--t:2s" d="M116 322H802"/>'+
   '<g class="cv-loader fd" style="--t:2s"><rect class="cv-carriage" x="-15" y="316" width="30" height="14"/><path class="cv-boom" d="M0 330V352"/><path class="cv-pour" d="M0 352V396"/></g>';
 
+/* drawing sheet: outer border, two framed viewports with title strips, title block */
+const PX=14,PW=1172,P1=[14,282],P2=[292,586],HB=24;
+const frame=([y0,y1],title,extra)=>'<g class="fd" style="--t:.15s"><rect class="cv-frame" x="'+PX+'" y="'+y0+'" width="'+PW+'" height="'+(y1-y0)+'"/>'+
+  '<rect class="cv-headbar" x="'+PX+'" y="'+y0+'" width="'+PW+'" height="'+HB+'"/><path class="cv-frame" d="M'+PX+' '+(y0+HB)+'H'+(PX+PW)+'"/>'+
+  '<rect class="cv-tag" x="'+PX+'" y="'+y0+'" width="150" height="'+HB+'"/>'+
+  '<text class="cv-view" x="'+(PX+12)+'" y="'+(y0+16)+'">'+title+'</text>'+extra+'</g>';
 host.innerHTML='<svg viewBox="0 0 1200 600" role="img" aria-labelledby="conveyor-note">'+
   '<defs><pattern id="cv-g1" width="20" height="20" patternUnits="userSpaceOnUse"><path class="cv-grid1" d="M20 0H0V20"/></pattern>'+
   '<pattern id="cv-g2" width="100" height="100" patternUnits="userSpaceOnUse"><path class="cv-grid2" d="M100 0H0V100"/></pattern>'+
   '<pattern id="cv-h" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path class="cv-hatch" d="M0 0V9"/></pattern>'+
-  '<pattern id="cv-c" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="6" height="6" fill="#e9c87a" fill-opacity=".22"/><path class="cv-chatch" d="M0 0V6"/></pattern></defs>'+
+  '<pattern id="cv-c" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="6" height="6" fill="#e9c87a" fill-opacity=".22"/><path class="cv-chatch" d="M0 0V6"/></pattern>'+
+  '<clipPath id="cv-clip1"><rect x="'+PX+'" y="'+(P1[0]+HB)+'" width="'+PW+'" height="'+(P1[1]-P1[0]-HB)+'"/></clipPath>'+
+  '<clipPath id="cv-clip2"><rect x="'+PX+'" y="'+(P2[0]+HB)+'" width="'+PW+'" height="'+(P2[1]-P2[0]-HB)+'"/></clipPath></defs>'+
   '<rect class="cv-paper" width="1200" height="600"/><rect width="1200" height="600" fill="url(#cv-g1)"/><rect width="1200" height="600" fill="url(#cv-g2)"/>'+
-  plan+'<path class="fd cv-rule" style="--t:.1s" d="M0 288H1200"/>'+section+
-  '<text class="cv-view fd" style="--t:.3s" x="16" y="24">'+i18n('x102')+'</text>'+
-  '<text class="cv-view fd" style="--t:.3s" x="170" y="310">'+i18n('x103')+'</text>'+
-  '<g class="fd" style="--t:1.8s"><rect class="cv-block" x="860" y="524" width="328" height="64"/><path class="cv-rulebox" d="M860 546H1188M1080 546V588"/>'+
-  '<text class="cv-tb" x="870" y="540">PT JAYAKHISMA GLOBE INDONESIA</text>'+
-  '<text class="cv-tb2" x="870" y="564">'+i18n('x90')+'</text><text class="cv-tb2" x="870" y="580">'+i18n('x104')+'</text>'+
-  '<text class="cv-tb2" x="1090" y="572">NTS</text></g></svg>';
+  '<rect class="cv-sheet" x="6" y="6" width="1188" height="588"/>'+
+  '<g clip-path="url(#cv-clip1)">'+plan+'</g>'+
+  '<g clip-path="url(#cv-clip2)"><g transform="translate(0 38)">'+section+'</g></g>'+
+  frame(P1,i18n('x102'),DEPTHS.map(([x,t])=>'<text class="cv-dim" x="'+x+'" y="'+(P1[0]+16)+'" text-anchor="middle">'+t+' m</text>').join(''))+
+  frame(P2,i18n('x103'),'<text class="cv-dim" x="1174" y="'+(P2[0]+16)+'" text-anchor="end">A — A</text>')+
+  '<g class="fd" style="--t:1.8s"><rect class="cv-block" x="24" y="520" width="340" height="58"/><path class="cv-rulebox" d="M24 540H364M290 540V578"/>'+
+  '<text class="cv-tb" x="34" y="535">PT JAYAKHISMA GLOBE INDONESIA</text>'+
+  '<text class="cv-tb2" x="34" y="556">'+i18n('x90')+'</text><text class="cv-tb2" x="34" y="571">'+i18n('x104')+'</text>'+
+  '<text class="cv-tb2" x="327" y="563" text-anchor="middle">NTS</text></g></svg>';
 
 const svg=host.querySelector('svg');
 svg.querySelectorAll('.dl').forEach(el=>el.setAttribute('pathLength','1'));

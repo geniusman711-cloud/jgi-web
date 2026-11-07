@@ -3,7 +3,7 @@ const q=s=>document.querySelector(s),qa=s=>[...document.querySelectorAll(s)];
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 
 /* ---------- scroll reveal ---------- */
-const revealSel=['.about-heading','.about-copy','.section-head','.route-tabs','.route-panels','.terminal','.conveyor-head>*','.conveyor-scroll','.product-layout>*','.commitment-layout>*','.story','.credentials>*','.contact-layout>*','.order-head>*','.order-row>*','.gallery-item','.band-inner','.metrics>div','.footer-top>*'];
+const revealSel=['.timeline','.inv-fact','.inv-why-grid>article','.privacy-wrap','.explore-card','.page-next>*','.home-cta-inner>*','.iup-canvas','.about-heading','.about-copy','.section-head','.route-tabs','.route-panels','.terminal','.conveyor-head>*','.conveyor-scroll','.product-layout>*','.commitment-layout>*','.story','.credentials>*','.contact-layout>*','.order-head>*','.order-row>*','.gallery-item','.band-inner','.metrics>div','.footer-top>*'];
 const targets=[...new Set(qa(revealSel.join(',')))];
 targets.forEach(el=>{
   el.classList.add('reveal');
@@ -53,10 +53,6 @@ document.addEventListener('route:change',e=>{q('.route-panels').dataset.dir=e.de
 
 /* ---------- scroll effects: progress, parallax, active nav ---------- */
 const bar=q('.scroll-progress'),heroMedia=q('.hero-media'),heroContent=q('.hero-content'),bandMedia=q('.band-media'),band=q('.photo-band');
-const navMap={profil:'profil',operasional:'operasional',produk:'produk',komitmen:'komitmen',kegiatan:'komitmen',galeri:'galeri',legalitas:null,kontak:null,pesan:'pesan'};
-const sections=Object.keys(navMap).map(id=>q('#'+id)).filter(Boolean);
-const navLinks=qa('#main-nav a[href^="#"]');
-
 /* floating contact: WhatsApp when configured, otherwise the contact section */
 const cfg=window.JGI_CONFIG||{},fab=q('.contact-fab');
 if(fab){
@@ -75,17 +71,16 @@ function frame(){
     if(heroContent&&y<vh){heroContent.style.transform='translate3d(0,'+(y*.1)+'px,0)';heroContent.style.opacity=Math.max(0,1-y/(vh*.8))}
     if(band&&bandMedia){const r=band.getBoundingClientRect();if(r.bottom>0&&r.top<vh){const off=(r.top+r.height/2-vh/2)*-.14;bandMedia.style.transform='translate3d(0,'+off+'px,0)'}}
   }
-  if(fab){const c=q('#kontak').getBoundingClientRect().top;fab.classList.toggle('show',y>vh*.8&&c>vh*.7)}
-  let cur=null;
-  for(const s of sections){if(s.getBoundingClientRect().top<=vh*.32)cur=s.id}
-  const key=cur?navMap[cur]:null;
-  navLinks.forEach(a=>a.classList.toggle('active',!!key&&a.getAttribute('href')==='#'+key));
+  if(fab){const k=q('#kontak'),c=k?k.getBoundingClientRect().top:Infinity;fab.classList.toggle('show',document.body.dataset.page!=='kontak'&&y>vh*.5&&c>vh*.7)}
 }
 function req(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
 addEventListener('scroll',req,{passive:true});
 addEventListener('resize',req);
 addEventListener('load',()=>{req();qa('.route-panel img').forEach(i=>{i.loading='eager'})});
 frame();
+
+/* investor summary: save as PDF through the print dialog */
+qa('.print-page').forEach(b=>b.addEventListener('click',()=>print()));
 
 /* blueprint image opens the lightbox */
 const thumb=q('.terminal-thumb');

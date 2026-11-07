@@ -81,3 +81,26 @@ window.JGI_FORM_STATUS={
 id:{sending:"Mengirim pesan…",ok:"Terima kasih. Pesan Anda sudah terkirim ke tim JGI.",fail:"Pesan gagal terkirim. Silakan kirim ke pt.jayakhisma@gmail.com."},
 en:{sending:"Sending your message…",ok:"Thank you. Your message has reached the JGI team.",fail:"Your message could not be sent. Please email pt.jayakhisma@gmail.com."}
 };
+Object.assign(window.JGI_COPY,{
+x110:{id:"Lihat batas wilayah IUP",en:"View the IUP boundary"},
+x111:{id:"Klik titik PT JGI untuk menampilkan batas wilayah.",en:"Tap the PT JGI marker to show the concession boundary."},
+x112:{id:"Wilayah IUP PT JGI",en:"PT JGI IUP concession"},
+x113:{id:"Luas 14.550 Ha",en:"Area 14,550 ha"},
+x114:{id:"Batas wilayah: Peta Tata Batas PT Jayakhisma Globe Indonesia, Biro Perbatasan Setda Prov. Kalimantan Timur. Garis pantai © OpenStreetMap contributors.",en:"Boundary: Peta Tata Batas PT Jayakhisma Globe Indonesia, Border Bureau, East Kalimantan Provincial Secretariat. Coastline © OpenStreetMap contributors."},
+x115:{id:"Buka di Google Maps",en:"Open in Google Maps"},
+x116:{id:"Selat Makassar",en:"Makassar Strait"},
+x117:{id:"Laut Sulawesi",en:"Celebes Sea"},
+x118:{id:"Teluk Sumbang",en:"Sumbang Bay"},
+x119:{id:"Tg. Mangkalihat",en:"Cape Mangkalihat"},
+x120:{id:"Tampilkan batas wilayah",en:"Show the boundary"},
+x121:{id:"Putar ulang animasi",en:"Replay animation"},
+x122:{id:"PETA WILAYAH",en:"AREA MAP"},
+x123:{id:"Tanjung Mangkalihat, Kutai Timur",en:"Tanjung Mangkalihat, East Kutai"},
+x124:{id:"Wilayah IUP",en:"IUP concession"},
+x125:{id:"Tutup peta",en:"Close map"},
+x128:{id:"Lokasi",en:"Location"},
+x129:{id:"Kec. Sandaran, Kutai Timur",en:"Sandaran District, East Kutai"},
+x132:{id:"14.550 Ha",en:"14,550 ha"},
+x126:{id:"Wilayah IUP PT JGI<br>di Tanjung Mangkalihat.",en:"PT JGI concession<br>at Tanjung Mangkalihat."},
+x127:{id:"Batas wilayah sesuai Peta Tata Batas resmi seluas 14.550 Ha di Kecamatan Sandaran, Kutai Timur. Klik titik PT JGI untuk menampilkannya.",en:"The boundary follows the official boundary map: 14,550 ha in Sandaran District, East Kutai. Tap the PT JGI marker to reveal it."}
+});

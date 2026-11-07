@@ -68,6 +68,10 @@ function build(){
     if(o.value)el.value=o.value;
     if(o.today){const d=new Date();el.value=new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)}
   }));
+  /* values passed from the shipment calculator */
+  const u=new URLSearchParams(location.search),qty=parseInt(u.get('qty'),10),terms=(u.get('terms')||'').slice(0,40);
+  if(qty>0&&q('#f-quantity'))q('#f-quantity').value=qty.toLocaleString('id-ID')+' MT';
+  if(terms&&q('#f-terms'))q('#f-terms').value=terms;
 }
 function label(n){if(lang==='zh')return ZH[n];for(const s of SECTIONS)for(const f of s.f)if(f[0]===n)return f[lang==='en'?2:1]}
 function labelId(n){for(const s of SECTIONS)for(const f of s.f)if(f[0]===n)return f[1]}
