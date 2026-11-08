@@ -728,3 +728,8 @@ html[data-theme=dark] .pn-next{background:#1b3340!important;border-color:#2c4a57
 .language-switch button{white-space:nowrap}
 @media(max-width:700px){.language-switch{gap:0}.language-switch button{min-width:32px;padding-inline:4px}.site-header .brand span{font-size:10px}.site-header{gap:6px}}
 @media(max-width:430px){.site-header .brand span{font-size:9.5px;letter-spacing:.6px}.site-header .brand small{font-size:7.5px;letter-spacing:.6px}.language-switch button{min-width:30px}.site-header .brand img{width:52px}}
+/* route map labels: leader lines and halos that match the ground under each label */
+.rm-leader{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3;opacity:.8}
+.rm-stop.on .rm-leader{stroke:var(--accent);opacity:1}
+.rm-stop[data-i="3"] .rm-name,.rm-stop[data-i="3"] .rm-sub,.rm-stop[data-i="4"] .rm-name,.rm-stop[data-i="4"] .rm-sub{stroke:var(--map-sea);stroke-width:5px}
+@media(max-width:700px){.rm-stop[data-i="4"] .rm-name,.rm-stop[data-i="4"] .rm-sub{stroke:var(--map-sea);stroke-width:5px}.rm-callout text{stroke:var(--map-sea);stroke-width:5px}}

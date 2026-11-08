@@ -19,8 +19,9 @@ const STOPS=[
 const LAYOUTS={
   wide:{w:1200,h:560,lon:118.9125,lat:1.058,ppd:19310,km:1,north:[1158,46],vessel:[70,3,1],callout:[70,18,'start',62,12],
     labels:[[0,30,'middle'],[-16,-2,'end'],[-10,-30,'end'],[2,30,'start'],[0,-34,'middle']]},
-  tall:{w:360,h:400,lon:118.9368,lat:1.058,ppd:13793,km:1,north:[30,76],vessel:[36,-8,.72],callout:[87,28,'end',44,14],
-    labels:[[15,-2,'start'],[14,22,'start'],[-20,-22,'end'],[-48,32,'start'],[-14,-26,'end']]}
+  /* phone: the stockpile, jetty and anchorage sit close together, so their labels move into open space with leader lines */
+  tall:{w:360,h:400,lon:118.9368,lat:1.058,ppd:13793,km:1,north:[30,76],vessel:[36,-8,.72],callout:[87.5,70,'end',62,46],
+    labels:[[15,-2,'start'],[14,22,'start'],[-14,-26,'end'],[0,32,'middle'],[59,-56,'end',[8,-26]]]}
 };
 
 const WAVES=[[118.9625,1.0565],[118.9545,1.0565],[118.9690,1.0478],[118.9610,1.0465],[118.9710,1.0545],[118.9720,1.0400],[118.9592,1.0540]];
@@ -59,9 +60,11 @@ function draw(){
   const seaStop=M.sea[M.seaStop],toAnchor=M.sea.slice(0,M.seaStop+1);
   const pts=[...M.stops.map(c=>proj(L,c)),proj(L,seaStop)];
   const stops=STOPS.map((s,i)=>{
-    const [x,y]=pts[i],[lx,ly,an]=L.labels[i];
+    const [x,y]=pts[i],[lx,ly,an,lead]=L.labels[i];
+    /* optional leader line from the ring edge to the label */
+    const leader=lead?(()=>{const [ex,ey]=lead,d=Math.hypot(ex,ey)||1;return '<path class="rm-leader" d="M'+(ex/d*10).toFixed(1)+' '+(ey/d*10).toFixed(1)+'L'+ex+' '+ey+'"/>'})():'';
     return '<g class="rm-stop" data-i="'+i+'" transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+')">'+
-      '<circle class="rm-hit" r="18"/><circle class="rm-pulse" r="8"/><circle class="rm-ring" r="8"/><circle class="rm-dot" r="3"/>'+
+      leader+'<circle class="rm-hit" r="18"/><circle class="rm-pulse" r="8"/><circle class="rm-ring" r="8"/><circle class="rm-dot" r="3"/>'+
       '<text class="rm-name" x="'+lx+'" y="'+ly+'" text-anchor="'+an+'">'+i18n(s.name)+'</text>'+
       '<text class="rm-sub" x="'+lx+'" y="'+(ly+18)+'" text-anchor="'+an+'">'+s.sub+'</text></g>';
   }).join('');

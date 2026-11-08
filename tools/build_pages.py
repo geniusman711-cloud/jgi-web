@@ -8,7 +8,7 @@ import json, os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, 'tools', 'pages')
-V = '39'
+V = '40'
 # public address of the site; change to the real domain once it is connected, then rebuild
 SITE = 'https://geniusman711-cloud.github.io/jgi-web/'  # cache-busting version for shared css/js
 
@@ -18,7 +18,7 @@ BACK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=
 # order = menu order and the "next page" chain
 PAGES = [
     dict(file='operasional', nav='t2', label='Operasional', title='Operasional', h1='p12', lead='p13', img='assets/jgi-tongkang-jetty.jpg',
-         desc='Alur operasi JGI dari tambang, hauling, stockpile, jetty hingga transhipment ke anchorage JGI.', js=['route-map-data.js?v=4', 'route-map.js?v=16']),
+         desc='Alur operasi JGI dari tambang, hauling, stockpile, jetty hingga transhipment ke anchorage JGI.', js=['route-map-data.js?v=4', 'route-map.js?v=17']),
     dict(file='pengembangan', nav='p1', label='Pengembangan', title='Rencana Pengembangan', h1='p14', lead='p15', img='assets/plan-terminal-coal.jpg',
          desc='Rencana terminal kapal curah 50.000–100.000 DWT dan dermaga pemuatan langsung dengan konveyor.', js=['conveyor.js?v=5']),
     dict(file='produk', nav='t3', label='Produk', title='Produk Batubara', h1='p16', lead='p17', img='assets/jgi-sampel-batubara.jpg',
